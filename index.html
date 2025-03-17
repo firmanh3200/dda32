@@ -1,0 +1,1830 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDA 3200</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Additional styles for mobile sidebar dropdown */
+        .sidebar-dropdown {
+            position: relative;
+        }
+        .sidebar-dropdown .dropdown-menu {
+            width: 250px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .sidebar-dropdown .dropdown-menu li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        .sidebar-dropdown .dropdown-menu li:hover {
+            background-color: var(--gray-200);
+        }
+        .sidebar-dropdown .dropdown-menu li.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <main class="main-content">
+            <!-- Header with Sidebar Dropdown -->
+            <header class="main-header">
+                <div class="header-title">
+                    <h1>Statistik Jawa Barat</h1>
+                    <p>Visualisasi Data Jawa Barat Dalam Angka</p>
+                </div>
+                <div class="header-actions">
+                    <div class="date-filter">
+                        <label for="year-select">Tahun:</label>
+                        <select id="year-select">
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                        </select>
+                    </div>
+                    <div class="sidebar-dropdown dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="sidebarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg class="logo" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M12 2L3 9v12h18V9L12 2zm0 3.5L18 9H6l6-3.5zM7 11h2v6H7v-6zm4 0h2v6h-2v-6zm4 0h2v6h-2v-6z" fill="currentColor"/>
+                            </svg>
+                            B A B
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="sidebarDropdown">
+                            <li data-page="dashboard" class="dropdown-item active"><i class="fas fa-home"></i> Dashboard</li>
+                            <li data-page="geografi" class="dropdown-item"><i class="fas fa-globe-asia"></i> Geografi</li>
+                            <li data-page="pemerintahan" class="dropdown-item"><i class="fas fa-landmark"></i> Pemerintahan</li>
+                            <li data-page="penduduk" class="dropdown-item"><i class="fas fa-users"></i> Penduduk</li>
+                            <li data-page="pendidikan" class="dropdown-item"><i class="fas fa-graduation-cap"></i> Pendidikan</li>
+                            <li data-page="kesehatan" class="dropdown-item"><i class="fas fa-medkit"></i> Kesehatan</li>
+                            <li data-page="pertanian" class="dropdown-item"><i class="fas fa-tractor"></i> Pertanian</li>
+                            <li data-page="industri" class="dropdown-item"><i class="fas fa-industry"></i> Industri</li>
+                            <li data-page="perdagangan" class="dropdown-item"><i class="fas fa-shopping-basket"></i> Perdagangan</li>
+                            <li data-page="pariwisata" class="dropdown-item"><i class="fas fa-umbrella-beach"></i> Pariwisata</li>
+                            <li data-page="statistics" class="dropdown-item"><i class="fas fa-chart-bar"></i> Statistik</li>
+                            <li data-page="ekonomi" class="dropdown-item"><i class="fas fa-briefcase"></i> Ekonomi</li>
+                            <li data-page="infrastruktur" class="dropdown-item"><i class="fas fa-map-marked-alt"></i> Infrastruktur</li>
+                        </ul>
+                    </div>
+                    <!--
+                    <div class="profile">
+                        <div class="avatar">
+                            <svg viewBox="0 0 24 24" width="32" height="32">
+                                <circle cx="12" cy="8" r="5" fill="currentColor"/>
+                                <path d="M3 21a9 9 0 0118 0H3z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </header>
+            <hr>
+            <!-- Pages Container - Each page is a div with the page class -->
+            <div class="pages-container">
+                <!-- Dashboard Page -->
+                <div class="page active" id="dashboard-page">
+                    
+                    <!-- Metrics Cards -->
+                    <section class="metrics-row">
+                        <div class="metric-card population">
+                            <div class="metric-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="metric-details">
+                                <h3>Jumlah Penduduk</h3>
+                                <p class="metric-value">3,542</p>
+                                <p class="metric-trend positive"><i class="fas fa-arrow-up"></i> 3.2% dari tahun lalu</p>
+                            </div>
+                        </div>
+                        <div class="metric-card income">
+                            <div class="metric-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="metric-details">
+                                <h3>Pendapatan Rata-rata</h3>
+                                <p class="metric-value">Rp 2.7 juta</p>
+                                <p class="metric-trend positive"><i class="fas fa-arrow-up"></i> 5.8% dari tahun lalu</p>
+                            </div>
+                        </div>
+                        <div class="metric-card education">
+                            <div class="metric-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="metric-details">
+                                <h3>Tingkat Pendidikan</h3>
+                                <p class="metric-value">78%</p>
+                                <p class="metric-trend positive"><i class="fas fa-arrow-up"></i> 2.1% dari tahun lalu</p>
+                            </div>
+                        </div>
+                        <div class="metric-card health">
+                            <div class="metric-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="metric-details">
+                                <h3>Akses Kesehatan</h3>
+                                <p class="metric-value">92%</p>
+                                <p class="metric-trend positive"><i class="fas fa-arrow-up"></i> 4.5% dari tahun lalu</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Charts Grid -->
+                    <section class="charts-grid">
+                        <div class="chart-container col-span-2">
+                            <div class="chart-header">
+                                <h3>Perkembangan Penduduk (5 Tahun Terakhir)</h3>
+                                <div class="chart-actions">
+                                    <button class="btn-chart-action"><i class="fas fa-redo"></i></button>
+                                    <button class="btn-chart-action"><i class="fas fa-ellipsis-v"></i></button>
+                                </div>
+                            </div>
+                            <div id="populationChart" class="chart"></div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Distribusi Umur</h3>
+                                <div class="chart-actions">
+                                    <button class="btn-chart-action"><i class="fas fa-redo"></i></button>
+                                    <button class="btn-chart-action"><i class="fas fa-ellipsis-v"></i></button>
+                                </div>
+                            </div>
+                            <div id="ageDistributionChart" class="chart"></div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Tingkat Pendidikan</h3>
+                                <div class="chart-actions">
+                                    <button class="btn-chart-action"><i class="fas fa-redo"></i></button>
+                                    <button class="btn-chart-action"><i class="fas fa-ellipsis-v"></i></button>
+                                </div>
+                            </div>
+                            <div id="educationChart" class="chart"></div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Tingkat Pengangguran</h3>
+                                <div class="chart-actions">
+                                    <button class="btn-chart-action"><i class="fas fa-redo"></i></button>
+                                    <button class="btn-chart-action"><i class="fas fa-ellipsis-v"></i></button>
+                                </div>
+                            </div>
+                            <div id="unemploymentChart" class="chart"></div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Pendapatan per Sektor</h3>
+                                <div class="chart-actions">
+                                    <button class="btn-chart-action"><i class="fas fa-redo"></i></button>
+                                    <button class="btn-chart-action"><i class="fas fa-ellipsis-v"></i></button>
+                                </div>
+                            </div>
+                            <div id="incomeChart" class="chart"></div>
+                        </div>
+                        <div class="chart-container col-span-2">
+                            <div class="chart-header">
+                                <h3>Perkembangan Infrastruktur</h3>
+                                <div class="chart-actions">
+                                    <button class="btn-chart-action"><i class="fas fa-redo"></i></button>
+                                    <button class="btn-chart-action"><i class="fas fa-ellipsis-v"></i></button>
+                                </div>
+                            </div>
+                            <div id="infrastructureChart" class="chart"></div>
+                        </div>
+                        <div class="chart-container col-span-2">
+                            <div class="chart-header">
+                                <h3>Distribusi Belanja Desa</h3>
+                                <div class="chart-actions">
+                                    <button class="btn-chart-action"><i class="fas fa-redo"></i></button>
+                                    <button class="btn-chart-action"><i class="fas fa-ellipsis-v"></i></button>
+                                </div>
+                            </div>
+                            <div id="budgetChart" class="chart"></div>
+                        </div>
+                      <div class="chart-container col-span-2">
+                            <div class="chart-header">
+                                <h3>Sumber Pendapatan Desa</h3>
+                                <div class="chart-actions">
+                                    <button class="btn-chart-action"><i class="fas fa-redo"></i></button>
+                                    <button class="btn-chart-action"><i class="fas fa-ellipsis-v"></i></button>
+                                </div>
+                            </div>
+                            <div id="budgetChart2" class="chart"></div>
+                        </div>
+                    </section>
+
+                    <!-- Data Table Section -->
+                    <section class="datatable-section">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Data Penduduk Desa</h3>
+                                <div class="datatable-actions">
+                                    <button class="btn-primary"><i class="fas fa-plus"></i> Tambah Data</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="populationTable" class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Usia</th>
+                                            <th>Pendidikan</th>
+                                            <th>Pekerjaan</th>
+                                            <th>Penghasilan</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Footer -->
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Geografi Page -->
+                <div class="page" id="geografi-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Geografi dan Iklim</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="geografi-year-select">Tahun:</label>
+                                <select id="geografi-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <div class="datatable-container">
+                        <div class="datatable-header">
+                            <h3>Peta Topografi Desa</h3>
+                        </div>
+                        <div class="desa-map-large" id="topografiMap">
+                            <div style="position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px; background: rgba(255,255,255,0.8); border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px;">
+                                <svg width="60" height="60" viewBox="0 0 24 24">
+                                    <path fill="#4e73df" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                <h3 style="margin: 10px 0; font-size: 16px; color: #5a5c69;">Peta Topografi Desa</h3>
+                                <p style="margin: 0; text-align: center; font-size: 14px; color: #858796;">Peta interaktif topografi wilayah desa</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-detail-grid">
+                        <div class="stats-detail-card">
+                            <h3>Curah Hujan Bulanan</h3>
+                            <div id="curahHujanChart" class="chart"></div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Suhu Rata-rata Bulanan</h3>
+                            <div id="suhuRataRataChart" class="chart"></div>
+                        </div>
+                    </div>
+                    
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Pemerintahan Page -->
+                <div class="page" id="pemerintahan-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Pemerintahan</h1>
+                        </div>
+                    </header>
+                    <br>
+                    <div class="pemerintahan-grid">
+                        <div class="pemerintahan-card">
+                            <h3>Program Prioritas</h3>
+                            <div id="programPrioritasChart" class="chart"></div>
+                        </div>
+                        <div class="pemerintahan-card">
+                            <h3>Realisasi Anggaran</h3>
+                            <div id="anggaranRealisasiChart" class="chart"></div>
+                        </div>
+                        <div class="pemerintahan-card wide-card">
+                            <h3>Pelayanan Publik</h3>
+                            <div class="service-stats-container">
+                                <div class="service-stat">
+                                    <div class="service-icon">
+                                        <i class="fas fa-id-card"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <h4>Administrasi Kependudukan</h4>
+                                        <div class="service-progress-container">
+                                            <div class="service-progress" style="width: 92%"></div>
+                                        </div>
+                                        <p>92% kepuasan masyarakat</p>
+                                    </div>
+                                </div>
+                                <div class="service-stat">
+                                    <div class="service-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <h4>Perizinan</h4>
+                                        <div class="service-progress-container">
+                                            <div class="service-progress" style="width: 87%"></div>
+                                        </div>
+                                        <p>87% kepuasan masyarakat</p>
+                                    </div>
+                                </div>
+                                <div class="service-stat">
+                                    <div class="service-icon">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                    </div>
+                                    <div class="service-details">
+                                        <h4>Bantuan Sosial</h4>
+                                        <div class="service-progress-container">
+                                            <div class="service-progress" style="width: 89%"></div>
+                                        </div>
+                                        <p>89% kepuasan masyarakat</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="agenda-section">
+                        <h2>Agenda Kegiatan Pemerintah Desa</h2>
+                        <div class="agenda-timeline">
+                            <div class="agenda-item">
+                                <div class="agenda-date">
+                                    <span class="month">JAN</span>
+                                    <span class="day">15</span>
+                                </div>
+                                <div class="agenda-content">
+                                    <h4>Musyawarah Rencana Pembangunan Desa</h4>
+                                    <p>Balai Desa, 09:00 WIB</p>
+                                </div>
+                            </div>
+                            <div class="agenda-item">
+                                <div class="agenda-date">
+                                    <span class="month">MAR</span>
+                                    <span class="day">22</span>
+                                </div>
+                                <div class="agenda-content">
+                                    <h4>Sosialisasi Program Kesehatan Masyarakat</h4>
+                                    <p>Puskesmas Desa, 10:00 WIB</p>
+                                </div>
+                            </div>
+                            <div class="agenda-item">
+                                <div class="agenda-date">
+                                    <span class="month">JUN</span>
+                                    <span class="day">05</span>
+                                </div>
+                                <div class="agenda-content">
+                                    <h4>Pelatihan Kewirausahaan Warga</h4>
+                                    <p>Aula Serbaguna, 13:00 WIB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Penduduk Page -->
+                <div class="page" id="penduduk-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Kependudukan</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="penduduk-year-select">Tahun:</label>
+                                <select id="penduduk-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="penduduk-highlights">
+                        <div class="stats-detail-grid">
+                            <div class="stats-detail-card">
+                                <h3>Komposisi Penduduk</h3>
+                                <div id="komposisiPendudukChart" class="chart"></div>
+                                <div class="chart-details">
+                                    <p>Total penduduk: 3,721</p>
+                                    <p>Laki-laki: 1,793 (48.2%)</p>
+                                    <p>Perempuan: 1,928 (51.8%)</p>
+                                </div>
+                            </div>
+                            <div class="stats-detail-card">
+                                <h3>Perkembangan Bulanan</h3>
+                                <div id="perkembanganBulananChart" class="chart"></div>
+                                <div class="chart-details">
+                                    <p>Pertumbuhan rata-rata: 15 orang/bulan</p>
+                                    <p>Kelahiran: 42 bayi</p>
+                                    <p>Kematian: 18 orang</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="penduduk-demografis">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Profil Demografis</h3>
+                            </div>
+                            <div class="demografis-grid">
+                                <div class="demografis-card">
+                                    <h4>Struktur Umur</h4>
+                                    <ul>
+                                        <li>0-17 tahun: 25%</li>
+                                        <li>18-35 tahun: 35%</li>
+                                        <li>36-55 tahun: 25%</li>
+                                        <li>56+ tahun: 15%</li>
+                                    </ul>
+                                </div>
+                                <div class="demografis-card">
+                                    <h4>Status Perkawinan</h4>
+                                    <ul>
+                                        <li>Kawin: 65%</li>
+                                        <li>Belum Kawin: 20%</li>
+                                        <li>Cerai Hidup: 10%</li>
+                                        <li>Cerai Mati: 5%</li>
+                                    </ul>
+                                </div>
+                                <div class="demografis-card">
+                                    <h4>Tingkat Pendidikan</h4>
+                                    <ul>
+                                        <li>Tidak Sekolah: 10%</li>
+                                        <li>SD: 22%</li>
+                                        <li>SMP: 38%</li>
+                                        <li>SMA: 13%</li>
+                                        <li>Perguruan Tinggi: 17%</li>
+                                    </ul>
+                                </div>
+                                <div class="demografis-card">
+                                    <h4>Pekerjaan</h4>
+                                    <ul>
+                                        <li>Petani: 35%</li>
+                                        <li>Wiraswasta: 25%</li>
+                                        <li>Buruh: 20%</li>
+                                        <li>PNS/TNI/Polri: 10%</li>
+                                        <li>Lainnya: 10%</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="penduduk-stats-section">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Statistik Kependudukan</h3>
+                                <div class="datatable-actions">
+                                    <button class="btn-primary"><i class="fas fa-file-export"></i> Cetak Laporan</button>
+                                </div>
+                            </div>
+                            <div class="penduduk-stats-grid">
+                                <div class="stats-box">
+                                    <div class="stats-box-icon bg-primary">
+                                        <i class="fas fa-home"></i>
+                                    </div>
+                                    <div class="stats-box-content">
+                                        <h4>Total KK</h4>
+                                        <p class="big-number">983</p>
+                                        <p class="small-info">Rata-rata 3.8 jiwa/KK</p>
+                                    </div>
+                                </div>
+                                <div class="stats-box">
+                                    <div class="stats-box-icon bg-success">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="stats-box-content">
+                                        <h4>Kelahiran</h4>
+                                        <p class="big-number">42</p>
+                                        <p class="small-info">+5% dari tahun lalu</p>
+                                    </div>
+                                </div>
+                                <div class="stats-box">
+                                    <div class="stats-box-icon bg-danger">
+                                        <i class="fas fa-user-minus"></i>
+                                    </div>
+                                    <div class="stats-box-content">
+                                        <h4>Kematian</h4>
+                                        <p class="big-number">18</p>
+                                        <p class="small-info">-8% dari tahun lalu</p>
+                                    </div>
+                                </div>
+                                <div class="stats-box">
+                                    <div class="stats-box-icon bg-info">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                    <div class="stats-box-content">
+                                        <h4>Migrasi Netto</h4>
+                                        <p class="big-number">+24</p>
+                                        <p class="small-info">Pendatang baru</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="penduduk-maps-section">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Sebaran dan Kepadatan Penduduk</h3>
+                                <div class="datatable-actions">
+                                    <button class="btn-primary"><i class="fas fa-layer-group"></i> Detail Peta</button>
+                                </div>
+                            </div>
+                            <div class="penduduk-map-container">
+                                <div id="pendudukMap" class="desa-map-large">
+                                    <div style="position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px; background: rgba(255,255,255,0.8); border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px;">
+                                        <svg width="60" height="60" viewBox="0 0 24 24">
+                                            <path fill="#4e73df" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                        </svg>
+                                        <h3 style="margin: 10px 0; font-size: 16px; color: #5a5c69;">Peta Sebaran Penduduk</h3>
+                                        <p style="margin: 0; text-align: center; font-size: 14px; color: #858796;">Visualisasi sebaran penduduk per wilayah</p>
+                                    </div>
+                                </div>
+                                <div class="map-legend">
+                                    <h4>Kepadatan Penduduk</h4>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background-color: #FFEDA0"></span>
+                                        <span>< 50 jiwa/km²</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background-color: #FEB24C"></span>
+                                        <span>50-100 jiwa/km²</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background-color: #F03B20"></span>
+                                        <span>> 100 jiwa/km²</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2024 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Pendidikan Page -->
+                <div class="page" id="pendidikan-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Pendidikan</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="pendidikan-year-select">Tahun:</label>
+                                <select id="pendidikan-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="pendidikan-overview-section">
+                        <div class="stats-detail-grid">
+                            <div class="stats-detail-card">
+                                <h3>Tingkat Pendidikan Terkini</h3>
+                                <div id="tingkatPendidikanChart" class="chart"></div>
+                            </div>
+                            <div class="stats-detail-card">
+                                <h3>Perkembangan Tingkat Pendidikan</h3>
+                                <div id="trendPendidikanChart" class="chart"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pendidikan-facilities">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Fasilitas Pendidikan</h3>
+                            </div>
+                            <div class="facility-cards">
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-school"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Taman Kanak-kanak</h4>
+                                        <p class="facility-count">2</p>
+                                        <div class="facility-stat">
+                                            <span>42 Murid</span>
+                                            <span>6 Guru</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-school"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Sekolah Dasar</h4>
+                                        <p class="facility-count">3</p>
+                                        <div class="facility-stat">
+                                            <span>325 Murid</span>
+                                            <span>24 Guru</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-school"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Sekolah Menengah Pertama</h4>
+                                        <p class="facility-count">1</p>
+                                        <div class="facility-stat">
+                                            <span>178 Murid</span>
+                                            <span>15 Guru</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-book-reader"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Perpustakaan Desa</h4>
+                                        <p class="facility-count">1</p>
+                                        <div class="facility-stat">
+                                            <span>2,500 Buku</span>
+                                            <span>3 Petugas</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pendidikan-performance">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Performa Pendidikan</h3>
+                            </div>
+                            <div class="performance-metrics">
+                                <div id="rataRataNilaiChart" class="chart"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pendidikan-programs">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Program Pendidikan</h3>
+                            </div>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Program</th>
+                                        <th>Target</th>
+                                        <th>Anggaran</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Beasiswa Desa Cerdas</td>
+                                        <td>45 siswa berprestasi</td>
+                                        <td>Rp 90 juta</td>
+                                        <td><span class="badge bg-success">Aktif</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Renovasi SD Desa</td>
+                                        <td>3 sekolah dasar</td>
+                                        <td>Rp 350 juta</td>
+                                        <td><span class="badge bg-primary">Proses</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kelas Digital</td>
+                                        <td>5 lab komputer</td>
+                                        <td>Rp 200 juta</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pelatihan Guru</td>
+                                        <td>45 guru</td>
+                                        <td>Rp 75 juta</td>
+                                        <td><span class="badge bg-success">Aktif</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Kesehatan Page -->
+                <div class="page" id="kesehatan-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Kesehatan</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="kesehatan-year-select">Tahun:</label>
+                                <select id="kesehatan-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="kesehatan-highlights">
+                        <div class="stats-highlight-grid">
+                            <div class="stats-card">
+                                <h3>Harapan Hidup</h3>
+                                <p class="stats-value">72.5 tahun</p>
+                                <div id="harapanHidupChart" class="mini-chart"></div>
+                            </div>
+                            <div class="stats-card">
+                                <h3>Angka Kematian Bayi</h3>
+                                <p class="stats-value">2.1%</p>
+                                <div id="kematianBayiChart" class="mini-chart"></div>
+                            </div>
+                            <div class="stats-card">
+                                <h3>Cakupan Vaksinasi</h3>
+                                <p class="stats-value">95%</p>
+                                <div id="cakupanVaksinasiChart" class="mini-chart"></div>
+                            </div>
+                            <div class="stats-card">
+                                <h3>Angka Kesakitan</h3>
+                                <p class="stats-value">4.2%</p>
+                                <div id="angkaKesakitanChart" class="mini-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="penyakit-section">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Pola Penyakit Umum</h3>
+                            </div>
+                            <div id="polaPenyakitChart" class="full-width-chart"></div>
+                        </div>
+                    </div>
+
+                    <div class="kesehatan-facilities">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Fasilitas Kesehatan</h3>
+                            </div>
+                            <div class="facility-cards">
+                                <div class="facility-card">
+                                    <div class="facility-icon bg-info">
+                                        <i class="fas fa-hospital"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Puskesmas</h4>
+                                        <p class="facility-count">1</p>
+                                        <div class="facility-stat">
+                                            <span>4 Dokter</span>
+                                            <span>12 Perawat</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon bg-info">
+                                        <i class="fas fa-clinic-medical"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Posyandu</h4>
+                                        <p class="facility-count">5</p>
+                                        <div class="facility-stat">
+                                            <span>15 Kader</span>
+                                            <span>5 Bidan</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon bg-info">
+                                        <i class="fas fa-pills"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Apotek</h4>
+                                        <p class="facility-count">2</p>
+                                        <div class="facility-stat">
+                                            <span>3 Apoteker</span>
+                                            <span>4 Asisten</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon bg-info">
+                                        <i class="fas fa-ambulance"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Ambulans Desa</h4>
+                                        <p class="facility-count">1</p>
+                                        <div class="facility-stat">
+                                            <span>2 Petugas</span>
+                                            <span>24 Jam</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kesehatan-programs">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Program Kesehatan</h3>
+                            </div>
+                            <div id="programKesehatanChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Pertanian Page -->
+                <div class="page" id="pertanian-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Pertanian</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="pertanian-year-select">Tahun:</label>
+                                <select id="pertanian-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="ekonomi-highlight">
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Luas Lahan Pertanian</h3>
+                                <p class="value">450 Hektar</p>
+                                <p class="trend positive">+5% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-wheat-awn"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Produksi Padi</h3>
+                                <p class="value">1,250 Ton</p>
+                                <p class="trend positive">+8.5% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Petani Aktif</h3>
+                                <p class="value">870 Orang</p>
+                                <p class="trend positive">+3.2% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-detail-grid">
+                        <div class="stats-detail-card">
+                            <h3>Distribusi Jenis Tanaman</h3>
+                            <div id="jenisTanamanChart" class="chart"></div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Hasil Panen Tahunan</h3>
+                            <div id="hasilPanenChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <div class="datatable-section">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Kelompok Tani</h3>
+                                <div class="datatable-actions">
+                                    <button class="btn-primary"><i class="fas fa-plus"></i> Tambah Kelompok</button>
+                                </div>
+                            </div>
+                            <table id="pertanianTable" class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Kelompok</th>
+                                        <th>Jumlah Anggota</th>
+                                        <th>Jenis Tanaman</th>
+                                        <th>Luas Lahan (Ha)</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Tani Makmur</td>
+                                        <td>45</td>
+                                        <td>Padi</td>
+                                        <td>75</td>
+                                        <td><span class="badge bg-success">Aktif</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Subur Jaya</td>
+                                        <td>38</td>
+                                        <td>Jagung</td>
+                                        <td>60</td>
+                                        <td><span class="badge bg-success">Aktif</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Tani Mandiri</td>
+                                        <td>32</td>
+                                        <td>Kedelai</td>
+                                        <td>45</td>
+                                        <td><span class="badge bg-success">Aktif</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Mitra Tani</td>
+                                        <td>25</td>
+                                        <td>Hortikultura</td>
+                                        <td>30</td>
+                                        <td><span class="badge bg-success">Aktif</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Harapan Baru</td>
+                                        <td>28</td>
+                                        <td>Palawija</td>
+                                        <td>40</td>
+                                        <td><span class="badge bg-success">Aktif</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="stats-detail-grid">
+                        <div class="stats-detail-card">
+                            <h3>Infrastruktur Pertanian</h3>
+                            <div class="facility-cards">
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-water"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Irigasi</h4>
+                                        <p class="facility-count">375 Ha</p>
+                                        <div class="facility-stat">
+                                            <span>83% dari lahan</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-warehouse"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Gudang</h4>
+                                        <p class="facility-count">5 Unit</p>
+                                        <div class="facility-stat">
+                                            <span>Kapasitas 500 ton</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-tractor"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Alat Berat</h4>
+                                        <p class="facility-count">12 Unit</p>
+                                        <div class="facility-stat">
+                                            <span>Traktor & Penggilingan</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Program Pertanian</h3>
+                            <div id="programPertanianChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2024 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Industri Page -->
+                <div class="page" id="industri-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Industri</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="industri-year-select">Tahun:</label>
+                                <select id="industri-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="ekonomi-highlight">
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Unit Usaha Industri</h3>
+                                <p class="value">42 Unit</p>
+                                <p class="trend positive">+15% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Nilai Produksi</h3>
+                                <p class="value">Rp 11.2 Miliar</p>
+                                <p class="trend positive">+18% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Tenaga Kerja</h3>
+                                <p class="value">550 Orang</p>
+                                <p class="trend positive">+12% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-detail-grid">
+                        <div class="stats-detail-card">
+                            <h3>Distribusi Sektor Industri</h3>
+                            <div id="sektorIndustriChart" class="chart"></div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Pertumbuhan Industri</h3>
+                            <div id="pertumbuhanIndustriChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <div class="stats-detail-grid">
+                        <div class="stats-detail-card col-span-2">
+                            <h3>Tenaga Kerja per Sektor</h3>
+                            <div id="tenagaKerjaIndustriChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <div class="datatable-section">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Daftar Unit Usaha Industri</h3>
+                                <div class="datatable-actions">
+                                    <button class="btn-primary"><i class="fas fa-plus"></i> Tambah Unit</button>
+                                </div>
+                            </div>
+                            <table id="industriTable" class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Usaha</th>
+                                        <th>Sektor</th>
+                                        <th>Omset Tahunan</th>
+                                        <th>Lokasi</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Perdagangan Page -->
+                <div class="page" id="perdagangan-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Perdagangan</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="perdagangan-year-select">Tahun:</label>
+                                <select id="perdagangan-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="ekonomi-highlight">
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Volume Perdagangan</h3>
+                                <p class="value">Rp 5.2 Miliar</p>
+                                <p class="trend positive">+12.5% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Pertumbuhan Usaha</h3>
+                                <p class="value">37 Unit Baru</p>
+                                <p class="trend positive">+22% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Transaksi Pasar</h3>
+                                <p class="value">89% Lokal</p>
+                                <p class="trend positive">Peningkatan Ekonomi Lokal</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-detail-grid">
+                        <div class="stats-detail-card">
+                            <h3>Distribusi Komoditas</h3>
+                            <div id="komoditasChart" class="chart"></div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Perkembangan Usaha Dagang</h3>
+                            <div id="usahaDagangChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <div class="datatable-section">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Pelaku Usaha Perdagangan</h3>
+                            </div>
+                            <table id="perdaganganTable" class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Usaha</th>
+                                        <th>Jenis Usaha</th>
+                                        <th>Omset Tahunan</th>
+                                        <th>Lokasi</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>Transaksi Perdagangan per Sektor</h3>
+                        </div>
+                        <div id="sektorPerdaganganChart" class="chart"></div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Pariwisata Page -->
+                <div class="page" id="pariwisata-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Pariwisata</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="pariwisata-year-select">Tahun:</label>
+                                <select id="pariwisata-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="ekonomi-highlight">
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Total Pengunjung</h3>
+                                <p class="value">15,780 Orang</p>
+                                <p class="trend positive">+22% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Pendapatan Pariwisata</h3>
+                                <p class="value">Rp 3.8 Miliar</p>
+                                <p class="trend positive">+28% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Usaha Pariwisata</h3>
+                                <p class="value">48 Unit</p>
+                                <p class="trend positive">+12 unit dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-detail-grid">
+                        <div class="stats-detail-card">
+                            <h3>Statistik Bulanan Pengunjung</h3>
+                            <div id="pengunjungBulananChart" class="chart"></div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Asal Pengunjung</h3>
+                            <div id="asalPengunjungChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <div class="datatable-section">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Objek Wisata Desa</h3>
+                            </div>
+                            <div class="facility-cards">
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-water"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Air Terjun Sejahtera</h4>
+                                        <p class="facility-count">5,820 Pengunjung</p>
+                                        <div class="facility-stat">
+                                            <span>Wisata Alam</span>
+                                            <span>★★★★☆</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-mountain"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Bukit Panorama</h4>
+                                        <p class="facility-count">4,560 Pengunjung</p>
+                                        <div class="facility-stat">
+                                            <span>Wisata Alam</span>
+                                            <span>★★★★★</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-landmark"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Desa Budaya</h4>
+                                        <p class="facility-count">3,250 Pengunjung</p>
+                                        <div class="facility-stat">
+                                            <span>Wisata Budaya</span>
+                                            <span>★★★★☆</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="facility-card">
+                                    <div class="facility-icon">
+                                        <i class="fas fa-cookie"></i>
+                                    </div>
+                                    <div class="facility-details">
+                                        <h4>Kampung Kuliner</h4>
+                                        <p class="facility-count">2,150 Pengunjung</p>
+                                        <div class="facility-stat">
+                                            <span>Wisata Kuliner</span>
+                                            <span>★★★★☆</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="datatable-section">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Infrastruktur Pariwisata</h3>
+                            </div>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Fasilitas</th>
+                                        <th>Jumlah</th>
+                                        <th>Kapasitas</th>
+                                        <th>Kondisi</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Homestay</td>
+                                        <td>15 Unit</td>
+                                        <td>60 Kamar</td>
+                                        <td>Baik</td>
+                                        <td><span class="badge bg-success">Operasional</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Warung Makan</td>
+                                        <td>12 Unit</td>
+                                        <td>250 Orang</td>
+                                        <td>Baik</td>
+                                        <td><span class="badge bg-success">Operasional</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Toilet Umum</td>
+                                        <td>25 Unit</td>
+                                        <td>-</td>
+                                        <td>Baik</td>
+                                        <td><span class="badge bg-success">Operasional</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Area Parkir</td>
+                                        <td>3 Lokasi</td>
+                                        <td>150 Kendaraan</td>
+                                        <td>Baik</td>
+                                        <td><span class="badge bg-success">Operasional</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pusat Informasi</td>
+                                        <td>1 Unit</td>
+                                        <td>-</td>
+                                        <td>Baik</td>
+                                        <td><span class="badge bg-success">Operasional</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="stats-detail-grid">
+                        <div class="stats-detail-card">
+                            <h3>Peta Destinasi Wisata</h3>
+                            <div id="pariwisataMap" class="desa-map-large">
+                                <div style="position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px; background: rgba(255,255,255,0.8); border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px;">
+                                    <svg width="60" height="60" viewBox="0 0 24 24">
+                                        <path fill="#4e73df" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                    </svg>
+                                    <h3 style="margin: 10px 0; font-size: 16px; color: #5a5c69;">Peta Objek Wisata</h3>
+                                    <p style="margin: 0; text-align: center; font-size: 14px; color: #858796;">Visualisasi sebaran objek wisata desa</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Promosi Digital</h3>
+                            <div id="promosiPariwisataChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2024 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Statistics Page -->
+                <div class="page" id="statistics-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Statistik</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="stats-year-select">Tahun:</label>
+                                <select id="stats-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="stats-highlight-box">
+                        <div class="stats-highlight-header">
+                            <h2>Highlight Statistik Desa</h2>
+                            <p>Informasi penting tentang perkembangan desa dalam tahun terpilih</p>
+                        </div>
+                        <div class="stats-highlight-grid">
+                            <div class="stats-card">
+                                <h3>Kepadatan Penduduk</h3>
+                                <p class="stats-value">124 jiwa/km²</p>
+                                <div id="densityChart" class="mini-chart"></div>
+                            </div>
+                            <div class="stats-card">
+                                <h3>Rasio Jenis Kelamin</h3>
+                                <p class="stats-value">102:100</p>
+                                <div id="genderRatioChart" class="mini-chart"></div>
+                            </div>
+                            <div class="stats-card">
+                                <h3>Indeks Pembangunan Desa</h3>
+                                <p class="stats-value">0.72</p>
+                                <div id="developmentIndexChart" class="mini-chart"></div>
+                            </div>
+                            <div class="stats-card">
+                                <h3>Tingkat Kelahiran</h3>
+                                <p class="stats-value">2.1%</p>
+                                <div id="birthRateChart" class="mini-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-comparison-section">
+                        <h2>Perbandingan Tahun 2023 vs 2024</h2>
+                        <div id="yearComparisonChart" class="full-width-chart"></div>
+                    </div>
+
+                    <div class="stats-detail-grid">
+                        <div class="stats-detail-card">
+                            <h3>Proyeksi Penduduk</h3>
+                            <div id="populationProjectionChart" class="chart"></div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Statistik Perkawinan</h3>
+                            <div id="marriageStatsChart" class="chart"></div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Indikator Kesejahteraan</h3>
+                            <div id="welfareIndicatorsChart" class="chart"></div>
+                        </div>
+                        <div class="stats-detail-card">
+                            <h3>Pendidikan vs Pendapatan</h3>
+                            <div id="educationIncomeChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Ekonomi Page -->
+                <div class="page" id="ekonomi-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Ekonomi</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="economy-year-select">Tahun:</label>
+                                <select id="economy-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="ekonomi-highlight">
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>PDRB Desa</h3>
+                                <p class="value">Rp 8.7 Miliar</p>
+                                <p class="trend positive">+8.2% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>UMKM Aktif</h3>
+                                <p class="value">127 Unit</p>
+                                <p class="trend positive">+15 unit dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                        <div class="ekonomi-highlight-item">
+                            <div class="ekonomi-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="ekonomi-details">
+                                <h3>Tingkat Inflasi</h3>
+                                <p class="value">3.2%</p>
+                                <p class="trend positive">-0.5% dari tahun sebelumnya</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ekonomi-sectors">
+                        <h2>Sektor Ekonomi Desa</h2>
+                        <div class="sector-cards">
+                            <div class="sector-card">
+                                <div class="sector-icon">
+                                    <i class="fas fa-tractor"></i>
+                                </div>
+                                <h3>Pertanian</h3>
+                                <p class="sector-value">45%</p>
+                                <div id="pertanianChart" class="mini-sector-chart"></div>
+                            </div>
+                            <div class="sector-card">
+                                <div class="sector-icon">
+                                    <i class="fas fa-industry"></i>
+                                </div>
+                                <h3>Industri Rumahan</h3>
+                                <p class="sector-value">22%</p>
+                                <div id="industriChart" class="mini-sector-chart"></div>
+                            </div>
+                            <div class="sector-card">
+                                <div class="sector-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <h3>Perdagangan</h3>
+                                <p class="sector-value">18%</p>
+                                <div id="perdaganganChart" class="mini-sector-chart"></div>
+                            </div>
+                            <div class="sector-card">
+                                <div class="sector-icon">
+                                    <i class="fas fa-concierge-bell"></i>
+                                </div>
+                                <h3>Jasa</h3>
+                                <p class="sector-value">15%</p>
+                                <div id="jasaChart" class="mini-sector-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ekonomi-detail-charts">
+                        <div class="ekonomi-chart-container">
+                            <h3>Perkembangan Ekonomi Desa</h3>
+                            <div id="perkembanganEkonomiChart" class="chart"></div>
+                        </div>
+                        <div class="ekonomi-chart-container">
+                            <h3>Distribusi Pendapatan</h3>
+                            <div id="pendapatanDistribusiChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <div class="umkm-section">
+                        <h2>Perkembangan UMKM</h2>
+                        <div class="umkm-table-container">
+                            <table id="umkmTable" class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama UMKM</th>
+                                        <th>Sektor</th>
+                                        <th>Jumlah Karyawan</th>
+                                        <th>Pendapatan Tahunan</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+                <!-- Infrastruktur Page -->
+                <div class="page" id="infrastruktur-page">
+                    <header class="header">
+                        <div class="header-title text-center">
+                            <h1>Bidang Infrastruktur</h1>
+                        </div>
+                        <div class="header-actions">
+                            <div class="date-filter">
+                                <label for="infrastruktur-year-select">Tahun:</label>
+                                <select id="infrastruktur-year-select">
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="infrastruktur-overview">
+                        <div class="stats-detail-grid">
+                            <div class="stats-detail-card">
+                                <h3>Peta Infrastruktur Desa</h3>
+                                <div id="infrastrukturMap" class="desa-map-large"></div>
+                            </div>
+                            <div class="stats-detail-card">
+                                <h3>Cakupan Infrastruktur</h3>
+                                <div id="cakupanInfrastrukturChart" class="chart"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="infrastruktur-stats">
+                        <div class="stats-highlight-grid">
+                            <div class="stats-card">
+                                <h3>Jalan Desa</h3>
+                                <p class="stats-value">18.5 km</p>
+                                <div class="progress-bar-container">
+                                    <div class="progress">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%;" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100">89% kondisi baik</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stats-card">
+                                <h3>Air Bersih</h3>
+                                <p class="stats-value">92%</p>
+                                <div class="progress-bar-container">
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100">92% rumah tangga</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stats-card">
+                                <h3>Listrik</h3>
+                                <p class="stats-value">98%</p>
+                                <div class="progress-bar-container">
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 98%;" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100">98% rumah tangga</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stats-card">
+                                <h3>Internet</h3>
+                                <p class="stats-value">85%</p>
+                                <div class="progress-bar-container">
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85% area desa</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="infrastruktur-projects">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Proyek Infrastruktur</h3>
+                            </div>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Proyek</th>
+                                        <th>Lokasi</th>
+                                        <th>Anggaran</th>
+                                        <th>Progress</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Perbaikan Jalan Desa Barat</td>
+                                        <td>Dusun Barat</td>
+                                        <td>Rp 450 juta</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-success">Selesai</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pembangunan Irigasi</td>
+                                        <td>Persawahan Timur</td>
+                                        <td>Rp 380 juta</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-primary">Proses</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Instalasi Menara BTS</td>
+                                        <td>Bukit Utara</td>
+                                        <td>Rp 650 juta</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-primary">Proses</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fasilitas Olahraga</td>
+                                        <td>Lapangan Desa</td>
+                                        <td>Rp 250 juta</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">30%</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-warning">Proses Awal</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="infrastruktur-comparison">
+                        <div class="datatable-container">
+                            <div class="datatable-header">
+                                <h3>Perbandingan Pembangunan Tahunan</h3>
+                            </div>
+                            <div id="pembangunanTahunanChart" class="chart"></div>
+                        </div>
+                    </div>
+
+                    <footer class="main-footer">
+                        <p>&copy; 2023 Dashboard Perkembangan Desa. Semua hak dilindungi.</p>
+                    </footer>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Import Maps for Modern Browsers -->
+    <script type="importmap">
+    {
+        "imports": {
+            "apexcharts": "https://cdn.jsdelivr.net/npm/apexcharts@3.42.0/dist/apexcharts.esm.js"
+        }
+    }
+    </script>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.42.0/dist/apexcharts.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
